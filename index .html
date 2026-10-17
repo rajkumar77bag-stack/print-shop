@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="logo-mark.png"/>
+  <title>Lupte Computer Admin Ops</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  
+  <!-- Plus Jakarta Sans & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#005F73",
+            "primary-container": "#004655",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#91d7ee",
+            "primary-fixed": "#b2ebff",
+            "primary-fixed-dim": "#8bd1e8",
+            "secondary": "#0A9396",
+            "secondary-container": "#86f0f3",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#006e70",
+            "secondary-fixed": "#89f3f6",
+            "secondary-fixed-dim": "#6bd7da",
+            "tertiary": "#2f424a",
+            "tertiary-container": "#465a62",
+            "surface": "#F8FAFC",
+            "surface-dim": "#cbdbf5",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "surface-container": "#e5eeff",
+            "surface-container-high": "#dce9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#3f484c",
+            "outline": "#6f797c",
+            "outline-variant": "#bfc8cc",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "on-error-container": "#93000a"
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "md": "0.75rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F8FAFC;
+      color: #0b1c30;
+      -webkit-font-smoothing: antialiased;
+    }
+    .tnum {
+      font-feature-settings: "tnum" 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #eff4ff;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #bfc8cc;
+      border-radius: 9999px;
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+      body { background: white !important; }
+    }
+    #printArea { display: none; }
+    @media print {
+      body.printing-file > *:not(#printArea) { display: none !important; }
+      body.printing-file #printArea { display: block !important; }
+      body.printing-file #printArea img { max-width: 100%; max-height: 98vh; display: block; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col custom-scroll">
+
+  <div id="printArea"></div>
+
+
+
+  <!-- TOP APP HEADER -->
+  <header id="adminHeader" class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-[0_1px_8px_rgba(0,0,0,0.03)] no-print">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <a href="#" onclick="switchView('admin'); return false;" class="flex items-center gap-3 group" aria-label="Lupte Computer Admin Ops">
+          <img src="logo-mark.png" alt="Lupte Computer logo" class="h-11 w-auto rounded-lg group-hover:scale-105 transition-transform"/>
+          <span class="text-[22px] font-extrabold tracking-tight text-[#001219] leading-none">Lupte <span class="text-[#0A8CFF]">Computer</span></span>
+        </a>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold text-primary">
+          <span class="material-symbols-outlined text-[15px]">admin_panel_settings</span>Admin Ops
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="index_.html" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-[18px]">storefront</span>Customer site
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- MAIN APP CONTAINER (Dynamic Viewport)                     -->
+  <!-- ======================================================== -->
+  <main id="adminMain" class="flex-1 w-full">
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: ADMIN DASHBOARD ORDERS QUEUE       -->
+    <!-- ========================================== -->
+    <section id="viewAdminQueue" class="hidden w-full">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 flex flex-col gap-6">
+
+        <!-- Admin section tabs -->
+        <div class="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-bold self-start no-print">
+          <button onclick="switchView('admin')" class="px-4 py-2 rounded-lg bg-white text-primary shadow-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">list_alt</span><span>Orders Queue</span>
+          </button>
+          <button onclick="switchView('admin-revenue')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">payments</span><span>Revenue</span>
+          </button>
+          <button onclick="switchView('admin-pan')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">badge</span><span>PAN Applications</span>
+            <span class="pan-tab-badge hidden px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold"></span>
+          </button>
+          <button onclick="switchView('admin-certs')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">workspace_premium</span><span>Certificates</span>
+            <span class="cert-tab-badge hidden px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold"></span>
+          </button>
+        </div>
+        
+        <!-- Top Bar: Action Context & Quick Shift Stats -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-secondary">Production Floor Management</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span class="text-xs text-slate-500">Shift Alpha (07:00 – 15:30)</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Print Orders Queue</h1>
+          </div>
+
+          <!-- Quick Global Facility Actions -->
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <button onclick="exportOrdersManifest()" class="flex items-center gap-1.5 px-3.5 py-2 bg-white text-primary rounded-lg text-xs font-bold shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
+              <span class="material-symbols-outlined text-[18px]">download_for_offline</span>
+              <span>Export Manifest (CSV)</span>
+            </button>
+            <button onclick="syncPrepressEngine()" id="btnSyncEngine" class="flex items-center gap-1.5 px-3.5 py-2 bg-white text-primary rounded-lg text-xs font-bold shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
+              <span class="material-symbols-outlined text-[18px]">cached</span>
+              <span>Sync Prepress Engine</span>
+            </button>
+            <button onclick="openModal('newManualJobModal')" class="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-[#004655] text-white rounded-lg text-xs font-bold shadow-sm transition-all">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              <span>New Manual Job</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Operational Metrics KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          
+          <!-- Metric 1: Active Print Jobs -->
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Active Print Jobs</p>
+                <h2 id="kpiActiveJobs" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">18</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-cyan-50 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">layers</span>
+              </span>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-100 text-[#006e70] font-bold">
+                <span class="material-symbols-outlined text-[14px]">trending_up</span> +4 today
+              </span>
+              <span class="text-slate-500 font-semibold">Capacity: 72%</span>
+            </div>
+          </div>
+
+          <!-- Metric 2: Awaiting Preflight / New -->
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Awaiting Preflight</p>
+                <h2 id="kpiAwaitingPreflight" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">5</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-slate-100 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">rule</span>
+              </span>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> 2 Priority RIP
+              </span>
+              <span class="text-slate-500 font-semibold">Avg wait: 4m</span>
+            </div>
+          </div>
+
+          <!-- Metric 3: Currently on Press -->
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Currently on Press</p>
+                <h2 id="kpiOnPress" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">7</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">precision_manufacturing</span>
+              </span>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> 3 Full Color
+              </span>
+              <span class="text-slate-500 font-semibold">694 sheets left</span>
+            </div>
+          </div>
+
+          <!-- Metric 4: Ready for Pickup -->
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Ready for Pickup</p>
+                <h2 id="kpiReadyPickup" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">6</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">task_alt</span>
+              </span>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-bold">
+                <span class="material-symbols-outlined text-[14px]">local_shipping</span> 2 Courier Out
+              </span>
+              <span class="text-slate-500 font-semibold">Hub #1 Staged</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Filter & Search Console -->
+        <div class="p-5 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col gap-4">
+          <div class="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4">
+            
+            <!-- Quick Filter Tabs -->
+            <div class="flex items-center bg-slate-100 p-1 rounded-xl overflow-x-auto text-xs font-bold">
+              <button onclick="filterAdminOrders('all')" id="filterBtnAll" class="px-4 py-2 rounded-lg bg-white text-slate-900 shadow-sm whitespace-nowrap">
+                All Jobs <span id="countFilterAll" class="ml-1 text-primary font-bold">(18)</span>
+              </button>
+              <button onclick="filterAdminOrders('new')" id="filterBtnNew" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                New <span id="countFilterNew" class="ml-1 px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-900 text-[10px] font-extrabold">5</span>
+              </button>
+              <button onclick="filterAdminOrders('in-printing')" id="filterBtnPrinting" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                In Printing <span id="countFilterPrinting" class="ml-1 px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold">7</span>
+              </button>
+              <button onclick="filterAdminOrders('ready')" id="filterBtnReady" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                Ready <span id="countFilterReady" class="ml-1 px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-extrabold">4</span>
+              </button>
+              <button onclick="filterAdminOrders('completed')" id="filterBtnCompleted" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">
+                Completed <span id="countFilterCompleted" class="ml-1 text-slate-500 font-bold">(2)</span>
+              </button>
+            </div>
+
+            <!-- Bulk Execution Action Buttons -->
+            <div class="flex items-center gap-2.5 self-end xl:self-auto">
+              <button onclick="batchWorkTickets()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 text-slate-800 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">receipt</span>
+                <span>Batch Work Tickets</span>
+              </button>
+              <button onclick="markSelectedReady()" class="flex items-center gap-1.5 px-3.5 py-2 bg-secondary text-white rounded-lg text-xs font-bold hover:opacity-90 shadow-sm transition-all">
+                <span class="material-symbols-outlined text-[18px]">done_all</span>
+                <span>Mark Selected Ready</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Secondary Query Search Strip -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pt-1 border-t border-slate-100">
+            <!-- Search input -->
+            <div class="md:col-span-6 relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[18px]">search</span>
+              <input id="adminSearchInput" onkeyup="handleAdminSearch(event)" type="text" placeholder="Search by Order ID, customer, file name, or paper spec..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-primary"/>
+            </div>
+            
+            <!-- Date Filter -->
+            <div class="md:col-span-3">
+              <div class="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800">
+                <div class="flex items-center gap-2 truncate">
+                  <span class="material-symbols-outlined text-[16px] text-slate-500">calendar_today</span>
+                  <span class="truncate font-semibold">Today (Oct 24, 2025)</span>
+                </div>
+                <span class="material-symbols-outlined text-[18px] text-slate-400">arrow_drop_down</span>
+              </div>
+            </div>
+
+            <!-- Hardware Filter -->
+            <div class="md:col-span-3">
+              <div class="flex items-center justify-between px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800">
+                <div class="flex items-center gap-2 truncate">
+                  <span class="material-symbols-outlined text-[16px] text-slate-500">print</span>
+                  <span class="truncate font-semibold">All Presses (1, 2, Plotter)</span>
+                </div>
+                <span class="material-symbols-outlined text-[18px] text-slate-400">arrow_drop_down</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Master Production Data Table -->
+        <div class="rounded-2xl bg-white shadow-sm border border-slate-200/80 overflow-hidden flex flex-col">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider border-b border-slate-200">
+                  <th class="py-3.5 pl-6 pr-2 w-10">
+                    <input type="checkbox" onchange="toggleSelectAllOrders(event)" class="rounded text-primary focus:ring-0 cursor-pointer"/>
+                  </th>
+                  <th class="py-3.5 px-4">Order ID & Time</th>
+                  <th class="py-3.5 px-4">Customer Details</th>
+                  <th class="py-3.5 px-4">Asset & Preflight</th>
+                  <th class="py-3.5 px-4">Job Specifications</th>
+                  <th class="py-3.5 px-4">Assigned Press</th>
+                  <th class="py-3.5 px-4">Fulfillment</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 pr-6 pl-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminOrdersTableBody" class="divide-y divide-slate-100 text-slate-800">
+                <!-- Dynamically populated from state.orders -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table Footer Pagination -->
+          <div class="p-4 bg-slate-50/70 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div class="flex items-center gap-4 text-slate-600">
+              <p>Showing <span id="paginationRange" class="font-bold text-slate-900">1 to 5</span> of <span id="paginationTotal" class="font-bold text-slate-900">18</span> active jobs</p>
+              <div class="h-4 w-px bg-slate-300"></div>
+              <div class="flex items-center gap-1.5 text-secondary font-semibold">
+                <span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+                <span>Live sync: updated 3s ago</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1">
+              <button class="p-1 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-800 disabled:opacity-40" disabled>
+                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+              </button>
+              <button class="px-2.5 py-1 rounded-lg bg-primary text-white font-bold">1</button>
+              <button class="px-2.5 py-1 rounded-lg hover:bg-slate-200 text-slate-700">2</button>
+              <button class="px-2.5 py-1 rounded-lg hover:bg-slate-200 text-slate-700">3</button>
+              <button class="p-1 rounded-lg bg-white border border-slate-200 text-slate-500 hover:text-slate-800">
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Equipment Load Status (2 cards) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          <!-- Press 1 Load -->
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                <h4 class="text-sm font-bold text-slate-900">Press 1: Canon C10010VP</h4>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded bg-teal-100 text-[#006e70] font-bold">Optimal</span>
+            </div>
+            <div class="mt-4">
+              <div class="flex justify-between text-xs text-slate-600 mb-1.5">
+                <span>Job Queue: 4 pending</span>
+                <span class="font-bold text-slate-900 tnum">84% Load</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full bg-primary" style="width: 84%;"></div>
+              </div>
+            </div>
+            <p class="mt-3 text-xs text-slate-500">Estimated cycle finish: 14:15 PM</p>
+          </div>
+
+          <!-- Press 2 Load -->
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                <h4 class="text-sm font-bold text-slate-900">Plotter: HP PageWide</h4>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-900 font-bold">Standby Ready</span>
+            </div>
+            <div class="mt-4">
+              <div class="flex justify-between text-xs text-slate-600 mb-1.5">
+                <span>Roll: 90gsm Bond Loaded</span>
+                <span class="font-bold text-slate-900 tnum">32% Load</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full bg-secondary" style="width: 32%;"></div>
+              </div>
+            </div>
+            <p class="mt-3 text-xs text-slate-500">2 wide format blueprints in queue</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4B: ADMIN REVENUE DASHBOARD           -->
+    <!-- ========================================== -->
+    <section id="viewAdminRevenue" class="hidden w-full">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 flex flex-col gap-6">
+
+        <!-- Admin section tabs -->
+        <div class="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-bold self-start no-print">
+          <button onclick="switchView('admin')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">list_alt</span><span>Orders Queue</span>
+          </button>
+          <button onclick="switchView('admin-revenue')" class="px-4 py-2 rounded-lg bg-white text-primary shadow-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">payments</span><span>Revenue</span>
+          </button>
+          <button onclick="switchView('admin-pan')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">badge</span><span>PAN Applications</span>
+            <span class="pan-tab-badge hidden px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold"></span>
+          </button>
+          <button onclick="switchView('admin-certs')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">workspace_premium</span><span>Certificates</span>
+            <span class="cert-tab-badge hidden px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold"></span>
+          </button>
+        </div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-secondary">Financial Overview</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span id="revRangeLabel" class="text-xs text-slate-500">Last 30 days</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Revenue Dashboard</h1>
+          </div>
+          <div class="flex items-center gap-2.5 flex-wrap no-print">
+            <div id="revRangeTabs" class="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-bold">
+              <button data-range="7" onclick="setRevenueRange('7')" class="px-3.5 py-2 rounded-lg">7D</button>
+              <button data-range="30" onclick="setRevenueRange('30')" class="px-3.5 py-2 rounded-lg">30D</button>
+              <button data-range="90" onclick="setRevenueRange('90')" class="px-3.5 py-2 rounded-lg">90D</button>
+              <button data-range="all" onclick="setRevenueRange('all')" class="px-3.5 py-2 rounded-lg">All</button>
+            </div>
+            <button onclick="exportRevenueCSV()" class="flex items-center gap-1.5 px-3.5 py-2 bg-white text-primary rounded-lg text-xs font-bold shadow-sm border border-slate-200 hover:bg-slate-50 transition-all">
+              <span class="material-symbols-outlined text-[18px]">download_for_offline</span>
+              <span>Export Revenue (CSV)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Revenue</p>
+                <h2 id="revKpiTotal" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">₹0.00</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-cyan-50 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+              </span>
+            </div>
+            <div id="revKpiTotalSub" class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 font-semibold"></div>
+          </div>
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Orders</p>
+                <h2 id="revKpiOrders" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">₹0.00</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-slate-100 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">receipt_long</span>
+              </span>
+            </div>
+            <div id="revKpiOrdersSub" class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 font-semibold"></div>
+          </div>
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Avg Order Value</p>
+                <h2 id="revKpiAov" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">₹0.00</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">sell</span>
+              </span>
+            </div>
+            <div id="revKpiAovSub" class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 font-semibold"></div>
+          </div>
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Completed Revenue</p>
+                <h2 id="revKpiCompleted" class="text-3xl font-extrabold text-slate-900 mt-1 tnum">₹0.00</h2>
+              </div>
+              <span class="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">task_alt</span>
+              </span>
+            </div>
+            <div id="revKpiCompletedSub" class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 font-semibold"></div>
+          </div>
+        </div>
+
+        <!-- Trend chart + status breakdown -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div class="xl:col-span-2 p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-extrabold text-slate-900">Revenue Over Time</h3>
+              <span id="revChartGranularity" class="text-[11px] font-semibold text-slate-500"></span>
+            </div>
+            <div id="revChartWrap" class="w-full overflow-x-auto custom-scroll"></div>
+          </div>
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80">
+            <h3 class="text-sm font-extrabold text-slate-900 mb-4">Revenue by Order Status</h3>
+            <div id="revStatusBreakdown" class="flex flex-col gap-4"></div>
+          </div>
+        </div>
+
+        <!-- Top customers + press + recent -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80">
+            <h3 class="text-sm font-extrabold text-slate-900 mb-4">Top Customers</h3>
+            <div id="revTopCustomers" class="flex flex-col gap-3"></div>
+          </div>
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80">
+            <h3 class="text-sm font-extrabold text-slate-900 mb-4">Revenue by Press</h3>
+            <div id="revByPress" class="flex flex-col gap-4"></div>
+          </div>
+          <div class="p-6 rounded-2xl bg-white shadow-sm border border-slate-200/80">
+            <h3 class="text-sm font-extrabold text-slate-900 mb-4">Recent Transactions</h3>
+            <div id="revRecent" class="flex flex-col divide-y divide-slate-100"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 6B: ADMIN PAN APPLICATIONS            -->
+    <!-- ========================================== -->
+    <section id="viewAdminPan" class="hidden w-full">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 flex flex-col gap-6">
+
+        <div class="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-bold self-start no-print">
+          <button onclick="switchView('admin')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">list_alt</span><span>Orders Queue</span></button>
+          <button onclick="switchView('admin-revenue')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">payments</span><span>Revenue</span></button>
+          <button onclick="switchView('admin-pan')" class="px-4 py-2 rounded-lg bg-white text-primary shadow-sm flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">badge</span><span>PAN Applications</span></button>
+          <button onclick="switchView('admin-certs')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">workspace_premium</span><span>Certificates</span>
+            <span class="cert-tab-badge hidden px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold"></span>
+          </button>
+        </div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-secondary">Document Services</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span id="adminPanCounts" class="text-xs text-slate-500"></span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">PAN Applications</h1>
+          </div>
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <select id="adminPanFilter" onchange="renderAdminPan()" class="px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary">
+              <option value="all">All statuses</option>
+            </select>
+            <input id="adminPanSearch" oninput="renderAdminPan()" type="text" placeholder="Search reference, name or mobile..." class="w-64 px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary"/>
+          </div>
+        </div>
+
+        <div class="rounded-2xl bg-white shadow-sm border border-slate-200/80 overflow-hidden">
+          <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px]">
+                <tr>
+                  <th class="p-4 font-bold">Reference</th>
+                  <th class="p-4 font-bold">Applicant</th>
+                  <th class="p-4 font-bold">Type</th>
+                  <th class="p-4 font-bold">Documents</th>
+                  <th class="p-4 font-bold">Status</th>
+                  <th class="p-4 font-bold text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminPanBody" class="divide-y divide-slate-100 text-slate-800"></tbody>
+            </table>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500 no-print">These applications contain personal documents. They are stored only in this browser. Delete an application once it has been processed.</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 8B: ADMIN CERTIFICATE APPLICATIONS    -->
+    <!-- ========================================== -->
+    <section id="viewAdminCerts" class="hidden w-full">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 flex flex-col gap-6">
+
+        <div class="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-bold self-start no-print">
+          <button onclick="switchView('admin')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">list_alt</span><span>Orders Queue</span></button>
+          <button onclick="switchView('admin-revenue')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">payments</span><span>Revenue</span></button>
+          <button onclick="switchView('admin-pan')" class="px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">badge</span><span>PAN Applications</span><span class="pan-tab-badge hidden px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold"></span></button>
+          <button onclick="switchView('admin-certs')" class="px-4 py-2 rounded-lg bg-white text-primary shadow-sm flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">workspace_premium</span><span>Certificates</span><span class="cert-tab-badge hidden px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold"></span></button>
+        </div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-secondary">Document Services</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span id="adminCertCounts" class="text-xs text-slate-500"></span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Certificate Applications</h1>
+          </div>
+          <div class="flex items-center gap-2.5 flex-wrap">
+            <select id="adminCertSvc" onchange="renderAdminCerts()" class="px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary">
+              <option value="all">All certificates</option>
+              <option value="income">Income Certificate</option>
+              <option value="caste">Caste Certificate</option>
+            </select>
+            <select id="adminCertFilter" onchange="renderAdminCerts()" class="px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary">
+              <option value="all">All statuses</option>
+            </select>
+            <input id="adminCertSearch" oninput="renderAdminCerts()" type="text" placeholder="Search reference, name or mobile..." class="w-64 px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary"/>
+          </div>
+        </div>
+
+        <div class="rounded-2xl bg-white shadow-sm border border-slate-200/80 overflow-hidden">
+          <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px]">
+                <tr>
+                  <th class="p-4 font-bold">Reference</th>
+                  <th class="p-4 font-bold">Applicant</th>
+                  <th class="p-4 font-bold">Certificate</th>
+                  <th class="p-4 font-bold">Documents</th>
+                  <th class="p-4 font-bold">Status</th>
+                  <th class="p-4 font-bold text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminCertBody" class="divide-y divide-slate-100 text-slate-800"></tbody>
+            </table>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500 no-print">These applications contain personal documents. They are stored only in this browser. Delete an application once it has been processed.</p>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 5: ADMIN ORDER DETAIL                 -->
+    <!-- ========================================== -->
+    <section id="viewAdminDetail" class="hidden w-full">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 flex flex-col gap-6">
+        
+        <!-- Breadcrumb Navigation -->
+        <nav class="flex items-center gap-2 text-xs">
+          <button onclick="switchView('admin')" class="text-slate-500 hover:text-primary transition-colors flex items-center gap-1 font-semibold">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Back to Orders Queue</span>
+          </button>
+          <span class="text-slate-300">/</span>
+          <span id="detailBreadcrumbId" class="text-slate-800 font-bold">Order #PE-84920</span>
+        </nav>
+
+        <!-- Sticky Action Header -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <h1 id="detailHeaderTitle" class="text-xl sm:text-2xl font-extrabold text-slate-900">Order #PE-84920</h1>
+            <span id="detailStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold">
+              <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              In Printing
+            </span>
+            <span class="hidden md:inline-block w-px h-6 bg-slate-200"></span>
+            <div class="flex items-center gap-1.5 text-xs text-slate-600">
+              <span class="material-symbols-outlined text-[18px] text-secondary">print</span>
+              <span>Assigned to <strong class="text-slate-900">Press #2</strong> (Canon Digital Color)</span>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 text-slate-800 hover:bg-slate-200 text-xs font-bold transition-colors">
+              <span class="material-symbols-outlined text-[16px]">print</span>
+              <span>Print Production Ticket</span>
+            </button>
+            <button onclick="downloadJobSourceZip()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 text-slate-800 hover:bg-slate-200 text-xs font-bold transition-colors">
+              <span class="material-symbols-outlined text-[16px]">cloud_download</span>
+              <span>Download Source (.ZIP)</span>
+            </button>
+            <select id="detailStatusChanger" onchange="changeDetailOrderStatus(event)" class="px-3 py-2 rounded-lg bg-primary text-white text-xs font-bold outline-none cursor-pointer">
+              <option value="New">Status: New</option>
+              <option value="In Printing" selected>Status: In Printing</option>
+              <option value="Ready">Status: Ready</option>
+              <option value="Completed">Status: Completed</option>
+            </select>
+            <button onclick="sendPickupAlert()" id="btnSendPickupAlert" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-secondary hover:opacity-95 text-white text-xs font-bold shadow-sm transition-all">
+              <span class="material-symbols-outlined text-[18px]">notifications_active</span>
+              <span>Send "Ready for Pickup" SMS & Email</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Alert Success Notification (hidden initially) -->
+        <div id="pickupAlertBanner" class="hidden p-4 rounded-xl bg-teal-100 border border-teal-200 text-[#006e70] flex items-center justify-between shadow-sm animate-fade-in">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[24px]">mark_email_read</span>
+            <p class="text-xs sm:text-sm font-bold">Customer Sarah Jenkins notified via SMS & Email with Locker #B-04 Access Code 8492.</p>
+          </div>
+          <button onclick="document.getElementById('pickupAlertBanner').classList.add('hidden')" class="p-1 hover:bg-teal-200/50 rounded">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        </div>
+
+        <!-- Detail Main 2-Column Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          
+          <!-- LEFT: Proofing & Preflight Specs (8 cols) -->
+          <div class="xl:col-span-8 flex flex-col gap-6">
+            
+            <!-- Customer Uploaded Files + Print -->
+            <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col gap-4">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-secondary text-[24px]">print</span>
+                  <h3 class="text-base font-bold text-slate-900">Customer Files &amp; Print</h3>
+                </div>
+                <span id="detailFilesBadge" class="px-3 py-1 rounded-full bg-teal-100 text-[#006e70] text-xs font-bold">0 files</span>
+              </div>
+              <div id="detailUploadedFiles" class="flex flex-col gap-3"></div>
+            </section>
+
+          </div>
+
+          <!-- RIGHT: Customer Profile, Notes & Locker (4 cols) -->
+          <div class="xl:col-span-4 flex flex-col gap-6">
+            
+            <!-- Customer Profile Card -->
+            <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col gap-4">
+              <div class="flex items-center gap-3.5">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Sarah Jenkins" class="w-12 h-12 rounded-full object-cover ring-2 ring-slate-100 shadow-sm"/>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="text-sm font-bold text-slate-900">Sarah Jenkins</h3>
+                    <span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
+                  </div>
+                  <span class="px-2 py-0.5 rounded-full bg-teal-100 text-[#006e70] text-[10px] font-bold inline-block">Pro Customer</span>
+                </div>
+              </div>
+
+              <!-- Customer Quick Contacts -->
+              <div class="space-y-1.5 text-xs">
+                <a href="mailto:sarah.j@example.com" class="flex items-center gap-2 p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-primary">mail</span>
+                  <span>sarah.j@example.com</span>
+                </a>
+                <a href="tel:5552345678" class="flex items-center gap-2 p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors">
+                  <span class="material-symbols-outlined text-[16px] text-primary">call</span>
+                  <span>(555) 234-5678</span>
+                </a>
+              </div>
+
+              <!-- Stats strip -->
+              <div class="grid grid-cols-3 gap-2 text-center p-3 rounded-xl bg-slate-50 text-xs">
+                <div>
+                  <span class="font-bold text-slate-900 block text-sm">12</span>
+                  <span class="text-[10px] text-slate-500">Orders</span>
+                </div>
+                <div>
+                  <span class="font-bold text-slate-900 block text-sm">₹840</span>
+                  <span class="text-[10px] text-slate-500">Lifetime</span>
+                </div>
+                <div>
+                  <span class="font-bold text-secondary block text-sm">0</span>
+                  <span class="text-[10px] text-slate-500">Returns</span>
+                </div>
+              </div>
+
+              <!-- Floor Notes Textarea (Auto-saved) -->
+              <div>
+                <div class="flex items-center justify-between mb-1 text-xs">
+                  <label for="detailFloorNotes" class="font-bold text-slate-700">Internal Floor Notes</label>
+                  <span id="floorNotesSavedBadge" class="text-secondary text-[10px] font-semibold">auto-saved</span>
+                </div>
+                <textarea id="detailFloorNotes" onkeyup="handleFloorNotesInput(event)" rows="3" class="w-full p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:bg-white focus:ring-2 focus:ring-primary resize-none">Customer requested extra rigid backing board for photo prints. Added at no extra charge.</textarea>
+              </div>
+            </section>
+
+            <!-- Locker & Hub Allocation -->
+            <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[20px]">storefront</span>
+                  <span>Fulfillment & Locker</span>
+                </h4>
+                <span class="px-2 py-0.5 rounded-full bg-teal-100 text-[#006e70] text-[10px] font-bold">Downtown Hub</span>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-3">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Assigned Locker</span>
+                    <span class="text-lg font-extrabold text-primary">Locker #B-04</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Customer PIN</span>
+                    <span class="text-lg font-mono font-extrabold text-secondary tracking-wider">8492</span>
+                  </div>
+                </div>
+                <div class="h-px bg-slate-200"></div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="text-slate-600">Promised Pickup:</span>
+                  <span class="font-bold text-slate-900">Today, 2:00 PM</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Production Timeline Audit Log -->
+            <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-primary text-[20px]">history</span>
+                  <span>Production Audit Trail</span>
+                </h4>
+                <span class="text-xs text-secondary font-bold">Active</span>
+              </div>
+
+              <div class="relative pl-6 space-y-4 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200 text-xs">
+                <div class="relative">
+                  <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 ring-4 ring-white"></div>
+                  <p class="font-bold text-slate-900">Order Placed & Preflight Validated</p>
+                  <p class="text-[11px] text-slate-500">11:15 AM • Automated Prepress Engine</p>
+                </div>
+                <div class="relative">
+                  <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 ring-4 ring-white"></div>
+                  <p class="font-bold text-slate-900">Assigned to Canon Press #2</p>
+                  <p class="text-[11px] text-slate-500">11:18 AM • Floor Operator Alex M.</p>
+                </div>
+                <div class="relative">
+                  <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-amber-500 ring-4 ring-white animate-pulse"></div>
+                  <p class="font-bold text-slate-900">RIP Rasterization & Printing</p>
+                  <p class="text-[11px] text-slate-500">11:32 AM • 18/50 sheets run (Active)</p>
+                </div>
+                <div class="relative opacity-50">
+                  <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-slate-300 ring-4 ring-white"></div>
+                  <p class="font-bold text-slate-700">Spiral Wire Binding & Packaging</p>
+                  <p class="text-[11px] text-slate-400">Pending print completion</p>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODALS & DRAWERS                                         -->
+  <!-- ======================================================== -->
+
+  <!-- MODAL: CUSTOMER FILE VIEWER -->
+  <div id="fileViewerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm" onclick="if(event.target===this) closeFileViewer()">
+    <div class="bg-white rounded-2xl max-w-4xl w-full shadow-2xl max-h-[92vh] flex flex-col overflow-hidden">
+      <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="material-symbols-outlined text-primary text-[22px]">description</span>
+          <h3 id="fileViewerTitle" class="text-base font-bold text-slate-900 truncate">File</h3>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="fileViewerPrintBtn" class="px-3.5 py-1.5 rounded-lg bg-primary hover:bg-[#004655] text-white text-xs font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">print</span><span>Print</span>
+          </button>
+          <a id="fileViewerDownload" href="#" download class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-primary text-xs font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">file_download</span><span>Download</span>
+          </a>
+          <button onclick="closeFileViewer()" class="p-1 rounded-lg text-slate-400 hover:text-slate-700">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        </div>
+      </div>
+      <div id="fileViewerBody" class="flex-1 overflow-auto bg-slate-100 p-4 flex items-center justify-center min-h-[300px]"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: PREPRESS PROOF INSPECTION -->
+  <div id="prepressModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md">
+    <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 id="modalProofTitle" class="text-base font-bold text-slate-900">Prepress Proof Inspection</h3>
+          <p class="text-xs text-slate-500">Checking bleed safe margin, trim boundary, and CMYK color gamut</p>
+        </div>
+        <button onclick="closeModal('prepressModal')" class="p-1 rounded-lg text-slate-400 hover:text-slate-700">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="relative bg-slate-100 rounded-xl p-8 flex items-center justify-center min-h-[380px] overflow-hidden border border-slate-200">
+        <div class="relative p-6 bg-white shadow-xl rounded">
+          <div class="relative w-64 sm:w-80 aspect-[1/1.414] overflow-hidden rounded bg-slate-200">
+            <img id="modalProofImg" src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80" alt="Proof" class="w-full h-full object-cover"/>
+            <div class="absolute inset-2 border-2 border-dashed border-red-500 pointer-events-none">
+              <span class="absolute top-1 left-1.5 px-1 py-0.5 rounded bg-red-600 text-[8px] text-white font-mono font-bold">TRIM SAFE 3MM</span>
+            </div>
+            <div class="absolute bottom-1 right-2 flex items-center gap-0.5">
+              <div class="w-2 h-2 bg-cyan-400"></div>
+              <div class="w-2 h-2 bg-pink-500"></div>
+              <div class="w-2 h-2 bg-yellow-400"></div>
+              <div class="w-2 h-2 bg-black"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between text-xs text-slate-600 pt-2">
+        <span class="flex items-center gap-1 text-emerald-700 font-bold">
+          <span class="material-symbols-outlined text-[16px]">check_circle</span>
+          Resolution: 300 DPI (Passed)
+        </span>
+        <button onclick="closeModal('prepressModal')" class="px-4 py-2 bg-primary text-white rounded-lg font-bold text-xs">
+          Approve Proof
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW MANUAL JOB (ADMIN) -->
+  <div id="newManualJobModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[22px]">add_circle</span>
+          <h3 class="text-base font-bold text-slate-900">New Manual Job Ticket</h3>
+        </div>
+        <button onclick="closeModal('newManualJobModal')" class="p-1 rounded text-slate-400 hover:text-slate-700">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleCreateManualJob(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Customer Name & Organization</label>
+          <input id="manualCustomerName" type="text" required placeholder="e.g. Apex Legal LLC" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 outline-none focus:ring-2 focus:ring-primary"/>
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Document / Job Name</label>
+          <input id="manualJobName" type="text" required placeholder="e.g. Q4_Executive_Report.pdf" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 outline-none focus:ring-2 focus:ring-primary"/>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Format & Specs</label>
+            <input id="manualSpecs" type="text" required placeholder="e.g. A4 • 50 copies • Color" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 outline-none focus:ring-2 focus:ring-primary"/>
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Assigned Hardware</label>
+            <select id="manualPress" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 outline-none">
+              <option>Canon imagePRESS C10010VP</option>
+              <option>HP PageWide Plotter</option>
+              <option>Xerox Nuvera 314</option>
+              <option>Heidelberg Versafire</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-3 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('newManualJobModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg font-bold text-slate-700">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-primary hover:bg-[#004655] text-white rounded-lg font-bold">Inject Job Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastNotification" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full bg-slate-900 text-white text-xs font-bold shadow-xl flex items-center gap-2 transition-all">
+    <span class="material-symbols-outlined text-secondary text-[18px]">info</span>
+    <span id="toastMessage">Action completed</span>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- APPLICATION SCRIPT & REACTIVE STATE                      -->
+  <!-- ======================================================== -->
+  <script>
+
+    // Global Application State (Persisted in localStorage)
+    const DEFAULT_CART = []; // no sample files
+
+    const DEFAULT_ORDERS = []; // no preloaded orders
+
+    let savedOrders = JSON.parse(localStorage.getItem("pe_orders_v2")) || DEFAULT_ORDERS;
+    // Always purge previous order PE-84920
+    savedOrders = savedOrders.filter(o => o.id !== "PE-84920");
+    // Orders saved before revenue tracking have no timestamp; stamp them with
+    // the first time they're seen so they land in the date-range reports.
+    if (savedOrders.some(o => !o.createdAt)) {
+      savedOrders.forEach(o => { if (!o.createdAt) o.createdAt = Date.now(); });
+      localStorage.setItem("pe_orders_v2", JSON.stringify(savedOrders));
+    }
+
+    let state = {
+      portal: "customer", // 'customer' or 'admin'
+      currentView: "upload", // 'upload', 'configure', 'tracking', 'admin', 'admin-detail'
+      cart: (JSON.parse(localStorage.getItem("pe_cart")) || DEFAULT_CART).filter(c =>
+        !["job-1", "job-2"].includes(c.id) &&
+        !["Annual_Marketing_Brochure_2025.pdf", "Studio_Portrait_Family.jpg"].includes(c.name)),
+      orders: savedOrders,
+      activeTrackingOrder: JSON.parse(localStorage.getItem("pe_active_order")) || null,
+      discountPct: 0,
+      activeAdminFilter: "all",
+      selectedOrderForDetail: null
+    };
+
+    function saveState() {
+      localStorage.setItem("pe_cart", JSON.stringify(state.cart));
+      localStorage.setItem("pe_orders_v2", JSON.stringify(state.orders));
+      if (state.activeTrackingOrder) {
+        localStorage.setItem("pe_active_order", JSON.stringify(state.activeTrackingOrder));
+      } else {
+        localStorage.removeItem("pe_active_order");
+      }
+    }
+
+    // -------------------------------------------------------------
+    // FILE DRAG & DROP & UPLOAD SIMULATION
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    // UPLOADED FILE STORE (memory + IndexedDB so admin can print them)
+    // -------------------------------------------------------------
+    const fileStore = {};
+    let _fileDB = null;
+    function openFileDB() {
+      if (_fileDB) return _fileDB;
+      _fileDB = new Promise((resolve, reject) => {
+        try {
+          const req = indexedDB.open("pe_files", 1);
+          req.onupgradeneeded = () => req.result.createObjectStore("files");
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        } catch (err) { reject(err); }
+      });
+      return _fileDB;
+    }
+    async function getFileBlob(id) {
+      if (fileStore[id]) return fileStore[id];
+      try {
+        const db = await openFileDB();
+        return await new Promise(resolve => {
+          const q = db.transaction("files").objectStore("files").get(id);
+          q.onsuccess = () => resolve(q.result || null);
+          q.onerror = () => resolve(null);
+        });
+      } catch (err) { return null; }
+    }
+
+    // -------------------------------------------------------------
+    // RENDER: ADMIN DASHBOARD (VIEW 4)
+    // -------------------------------------------------------------
+    function renderAdminTable() {
+      const tbody = document.getElementById("adminOrdersTableBody");
+      if (!tbody) return;
+
+      tbody.innerHTML = "";
+
+      // Filter by active tab & search query
+      const query = (document.getElementById("adminSearchInput")?.value || "").toLowerCase();
+      
+      const filtered = state.orders.filter(ord => {
+        // Tab filter
+        if (state.activeAdminFilter === "new" && ord.status !== "New") return false;
+        if (state.activeAdminFilter === "in-printing" && ord.status !== "In Printing") return false;
+        if (state.activeAdminFilter === "ready" && ord.status !== "Ready") return false;
+        if (state.activeAdminFilter === "completed" && ord.status !== "Completed") return false;
+
+        // Search query
+        if (query) {
+          const match = ord.id.toLowerCase().includes(query) ||
+                        ord.customer.toLowerCase().includes(query) ||
+                        ord.fileName.toLowerCase().includes(query) ||
+                        ord.specs.toLowerCase().includes(query);
+          if (!match) return false;
+        }
+
+        return true;
+      });
+
+      // Update KPI counters
+      const activeCount = state.orders.filter(o => o.status !== "Completed").length;
+      const newCount = state.orders.filter(o => o.status === "New").length;
+      const printingCount = state.orders.filter(o => o.status === "In Printing").length;
+      const readyCount = state.orders.filter(o => o.status === "Ready").length;
+      const completedCount = state.orders.filter(o => o.status === "Completed").length;
+
+      document.getElementById("kpiActiveJobs").textContent = activeCount;
+      document.getElementById("kpiAwaitingPreflight").textContent = newCount;
+      document.getElementById("kpiOnPress").textContent = printingCount;
+      document.getElementById("kpiReadyPickup").textContent = readyCount;
+
+      document.getElementById("countFilterAll").textContent = `(${state.orders.length})`;
+      document.getElementById("countFilterNew").textContent = newCount;
+      document.getElementById("countFilterPrinting").textContent = printingCount;
+      document.getElementById("countFilterReady").textContent = readyCount;
+      document.getElementById("countFilterCompleted").textContent = `(${completedCount})`;
+
+      document.getElementById("paginationRange").textContent = `1 to ${filtered.length}`;
+      document.getElementById("paginationTotal").textContent = state.orders.length;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-slate-400">No orders found.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach((ord, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition-colors";
+        tr.innerHTML = `
+          <td class="py-4 pl-6 pr-2 align-middle">
+            <input type="checkbox" data-order-id="${ord.id}" class="rounded text-primary focus:ring-0 cursor-pointer order-checkbox"/>
+          </td>
+          <td class="py-4 px-4 align-middle">
+            <div class="flex flex-col">
+              <button onclick="viewOrderDetail('${ord.id}')" class="font-mono font-bold text-primary hover:underline text-left">#${ord.id}</button>
+              <span class="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
+                <span class="material-symbols-outlined text-[13px]">schedule</span> ${ord.time}
+              </span>
+            </div>
+          </td>
+          <td class="py-4 px-4 align-middle">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center font-bold text-primary text-xs shrink-0">${ord.initials}</div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-bold text-slate-900 truncate">${ord.customer}</span>
+                <span class="text-slate-500 text-[11px] truncate">${ord.email}</span>
+                <span class="w-fit px-1.5 py-0.2 rounded bg-slate-100 text-primary text-[10px] font-bold mt-0.5">Tier: ${ord.tier}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-4 px-4 align-middle">
+            <div class="flex flex-col min-w-0">
+              <span class="font-bold text-slate-900 truncate max-w-[150px]">${ord.fileName}</span>
+              <span class="text-[11px] text-slate-500">${ord.pages}</span>
+              <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-0.5 mt-0.5">
+                <span class="material-symbols-outlined text-[12px]">verified</span> Preflight OK
+              </span>
+            </div>
+          </td>
+          <td class="py-4 px-4 align-middle">
+            <div class="text-[11px] text-slate-700 max-w-[200px] leading-tight">
+              ${ord.specs}
+            </div>
+          </td>
+          <td class="py-4 px-4 align-middle">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full ${ord.status === 'In Printing' ? 'bg-secondary animate-pulse' : 'bg-slate-400'}"></span>
+              <div class="flex flex-col">
+                <span class="font-semibold text-slate-900 truncate max-w-[130px]">${ord.press}</span>
+                <span class="text-[10px] text-slate-400">${ord.pressTray || 'Default Tray'}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-4 px-4 align-middle">
+            <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold text-[11px]">
+              ${ord.fulfillment}
+            </span>
+          </td>
+          <td class="py-4 px-4 align-middle">
+            <select onchange="changeOrderStatus('${ord.id}', this.value)" class="px-2.5 py-1 rounded-lg text-xs font-bold outline-none cursor-pointer ${getStatusBadgeClass(ord.status)}">
+              <option value="New" ${ord.status === 'New' ? 'selected' : ''}>New</option>
+              <option value="In Printing" ${ord.status === 'In Printing' ? 'selected' : ''}>In Printing</option>
+              <option value="Ready" ${ord.status === 'Ready' ? 'selected' : ''}>Ready</option>
+              <option value="Completed" ${ord.status === 'Completed' ? 'selected' : ''}>Completed</option>
+            </select>
+          </td>
+          <td class="py-4 pr-6 pl-4 align-middle text-right">
+            <div class="flex items-center justify-end gap-1">
+              <button onclick="viewOrderDetail('${ord.id}')" class="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-primary transition-colors" title="View Specs & Prepress Proof">
+                <span class="material-symbols-outlined text-[18px]">visibility</span>
+              </button>
+              <button onclick="downloadJobSourceZip('${ord.id}')" class="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-primary transition-colors" title="Download Assets">
+                <span class="material-symbols-outlined text-[18px]">cloud_download</span>
+              </button>
+              <button onclick="window.print()" class="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-primary transition-colors" title="Print Job Ticket">
+                <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+              </button>
+              <button onclick="deleteAdminOrder('${ord.id}')" class="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors" title="Delete / Remove Order">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function deleteAdminOrder(orderId) {
+      if (confirm(`Remove Order #${orderId}?`)) {
+        state.orders = state.orders.filter(o => o.id !== orderId);
+        if (state.activeTrackingOrder && state.activeTrackingOrder.id === orderId) {
+          state.activeTrackingOrder = null;
+          localStorage.removeItem("pe_active_order");
+        }
+        saveState();
+        renderAdminTable();
+        showToast(`Order #${orderId} has been removed.`);
+      }
+    }
+
+    function getStatusBadgeClass(status) {
+      if (status === "In Printing") return "bg-amber-100 text-amber-900 border border-amber-300";
+      if (status === "Ready") return "bg-emerald-100 text-emerald-900 border border-emerald-300";
+      if (status === "Completed") return "bg-slate-200 text-slate-700 border border-slate-300";
+      return "bg-blue-100 text-blue-900 border border-blue-300";
+    }
+
+    function filterAdminOrders(tab) {
+      state.activeAdminFilter = tab;
+      
+      const tabs = ["all", "new", "in-printing", "ready", "completed"];
+      tabs.forEach(t => {
+        const btn = document.getElementById(t === "all" ? "filterBtnAll" :
+                    t === "new" ? "filterBtnNew" :
+                    t === "in-printing" ? "filterBtnPrinting" :
+                    t === "ready" ? "filterBtnReady" : "filterBtnCompleted");
+        if (btn) {
+          if (t === tab) {
+            btn.className = "px-4 py-2 rounded-lg bg-white text-slate-900 shadow-sm whitespace-nowrap";
+          } else {
+            btn.className = "px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap";
+          }
+        }
+      });
+
+      renderAdminTable();
+    }
+
+    function handleAdminSearch(e) {
+      renderAdminTable();
+    }
+
+    function changeOrderStatus(orderId, newStatus) {
+      const ord = state.orders.find(o => o.id === orderId);
+      if (ord) {
+        ord.status = newStatus;
+        saveState();
+        renderAdminTable();
+        showToast(`Order #${orderId} updated to ${newStatus}`);
+      }
+    }
+
+    function toggleSelectAllOrders(e) {
+      const checked = e.target.checked;
+      document.querySelectorAll(".order-checkbox").forEach(cb => cb.checked = checked);
+    }
+
+    function markSelectedReady() {
+      const checkedBoxes = document.querySelectorAll(".order-checkbox:checked");
+      if (checkedBoxes.length === 0) {
+        showToast("Please select at least one order checkbox.");
+        return;
+      }
+
+      checkedBoxes.forEach(cb => {
+        const id = cb.getAttribute("data-order-id");
+        const ord = state.orders.find(o => o.id === id);
+        if (ord) ord.status = "Ready";
+      });
+
+      saveState();
+      renderAdminTable();
+      showToast(`${checkedBoxes.length} orders marked as Ready for Pickup!`);
+    }
+
+    function batchWorkTickets() {
+      showToast("Generating batch PDF routing work tickets...");
+      setTimeout(() => {
+        window.print();
+      }, 500);
+    }
+
+    function exportOrdersManifest() {
+      let csv = "Order ID,Customer,Email,File,Pages,Specs,Assigned Press,Status,Total\n";
+      state.orders.forEach(o => {
+        csv += `"${o.id}","${o.customer}","${o.email}","${o.fileName}","${o.pages}","${o.specs}","${o.press}","${o.status}","${o.total}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `lupte-computer-manifest-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("Exported manifest CSV!");
+    }
+
+    function syncPrepressEngine() {
+      const btn = document.getElementById("btnSyncEngine");
+      btn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span><span>Syncing...</span>`;
+      setTimeout(() => {
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">cached</span><span>Sync Prepress Engine</span>`;
+        showToast("Prepress Raster Image Processors synced with Plant #4.");
+      }, 1000);
+    }
+
+    function handleCreateManualJob(e) {
+      e.preventDefault();
+      const customer = document.getElementById("manualCustomerName").value;
+      const jobName = document.getElementById("manualJobName").value;
+      const specs = document.getElementById("manualSpecs").value;
+      const press = document.getElementById("manualPress").value;
+
+      const newId = "PE-" + Math.floor(10000 + Math.random() * 90000);
+      const initials = customer.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase() || "JB";
+
+      state.orders.unshift({
+        id: newId,
+        createdAt: Date.now(),
+        time: "Just now",
+        customer: customer,
+        email: "operations@client.com",
+        tier: "Standard",
+        initials: initials,
+        fileName: jobName,
+        pages: "Manual Run",
+        specs: specs,
+        press: press,
+        pressTray: "Tray 1",
+        fulfillment: "Downtown Hub",
+        status: "New",
+        total: "₹45.00"
+      });
+
+      saveState();
+      closeModal("newManualJobModal");
+      renderAdminTable();
+      showToast(`Manual Job #${newId} inserted into queue.`);
+    }
+
+    // -------------------------------------------------------------
+    // RENDER: ADMIN REVENUE DASHBOARD (VIEW 4B)
+    // -------------------------------------------------------------
+    let revenueRange = "30"; // '7' | '30' | '90' | 'all'
+
+    const escapeHtml = (v) => String(v ?? "").replace(/[&<>"']/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const inr = (n) => "₹" + n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const orderAmount = (o) => parseFloat(String(o.total || "0").replace(/[^0-9.]/g, "")) || 0;
+
+    function setRevenueRange(r) {
+      revenueRange = r;
+      renderRevenueDashboard();
+    }
+
+    function getRevenueWindow() {
+      const DAY = 86400000;
+      const now = Date.now();
+      if (revenueRange === "all") return { start: 0, end: now, prevStart: null, label: "All time" };
+      const days = parseInt(revenueRange, 10);
+      // Align to local midnight so "7D" means today + the 6 previous calendar days
+      const midnight = new Date(); midnight.setHours(0, 0, 0, 0);
+      const start = midnight.getTime() - (days - 1) * DAY;
+      return { start, end: now, prevStart: start - days * DAY, prevEnd: start, days, label: `Last ${days} days` };
+    }
+
+    function buildRevenueBuckets(orders, win) {
+      const DAY = 86400000;
+      let start = win.start;
+      if (revenueRange === "all") {
+        start = orders.length ? Math.min(...orders.map(o => o.createdAt)) : Date.now();
+        const d = new Date(start); d.setHours(0, 0, 0, 0); start = d.getTime();
+      }
+      const spanDays = Math.max(1, Math.ceil((win.end - start) / DAY));
+      let mode = "day";
+      if (revenueRange === "90") mode = "week";
+      if (revenueRange === "all") mode = spanDays <= 31 ? "day" : (spanDays <= 120 ? "week" : "month");
+
+      const buckets = [];
+      const cursor = new Date(start);
+      if (mode === "month") cursor.setDate(1);
+      while (cursor.getTime() <= win.end) {
+        const from = cursor.getTime();
+        const next = new Date(cursor);
+        if (mode === "day") next.setDate(next.getDate() + 1);
+        else if (mode === "week") next.setDate(next.getDate() + 7);
+        else next.setMonth(next.getMonth() + 1);
+        const label = mode === "month"
+          ? cursor.toLocaleDateString("en-IN", { month: "short", year: "2-digit" })
+          : cursor.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+        buckets.push({ from, to: next.getTime(), label, value: 0, count: 0 });
+        cursor.setTime(next.getTime());
+      }
+      orders.forEach(o => {
+        const b = buckets.find(b => o.createdAt >= b.from && o.createdAt < b.to) || buckets[buckets.length - 1];
+        if (b) { b.value += orderAmount(o); b.count++; }
+      });
+      return { buckets, mode };
+    }
+
+    function renderRevenueChart(buckets, mode) {
+      const wrap = document.getElementById("revChartWrap");
+      document.getElementById("revChartGranularity").textContent =
+        mode === "day" ? "Daily" : mode === "week" ? "Weekly" : "Monthly";
+
+      const max = Math.max(...buckets.map(b => b.value), 0);
+      if (max === 0) {
+        wrap.innerHTML = `<div class="h-[260px] flex flex-col items-center justify-center text-slate-400 text-sm gap-2">
+          <span class="material-symbols-outlined text-[32px]">bar_chart</span>No revenue in this period.</div>`;
+        return;
+      }
+      // "Nice" axis ceiling
+      const pow = Math.pow(10, Math.floor(Math.log10(max)));
+      const ceil = Math.ceil(max / pow * 2) / 2 * pow;
+      const W = Math.max(640, buckets.length * 28), H = 260;
+      const padL = 56, padR = 12, padT = 12, padB = 32;
+      const innerW = W - padL - padR, innerH = H - padT - padB;
+      const slot = innerW / buckets.length, barW = Math.min(36, slot * 0.64);
+      const labelEvery = Math.ceil(buckets.length / Math.floor(innerW / 64));
+
+      let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="min-width:${Math.min(W, 640)}px" role="img" aria-label="Revenue over time bar chart">`;
+      for (let i = 0; i <= 4; i++) {
+        const y = padT + innerH - (innerH * i / 4);
+        const v = ceil * i / 4;
+        svg += `<line x1="${padL}" x2="${W - padR}" y1="${y}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`;
+        svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="10" fill="#64748b" font-family="Plus Jakarta Sans, sans-serif">₹${v >= 1000 ? (v / 1000).toFixed(v % 1000 ? 1 : 0) + "k" : Math.round(v)}</text>`;
+      }
+      buckets.forEach((b, i) => {
+        const h = innerH * b.value / ceil;
+        const x = padL + slot * i + (slot - barW) / 2;
+        const y = padT + innerH - h;
+        svg += `<g><title>${b.label}: ${inr(b.value)} · ${b.count} order${b.count === 1 ? "" : "s"}</title>
+          <rect x="${x}" y="${padT}" width="${barW}" height="${innerH}" fill="transparent"/>
+          ${b.value > 0 ? `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="4" fill="#0A9396" class="hover:opacity-80"/>` : `<rect x="${x}" y="${padT + innerH - 2}" width="${barW}" height="2" rx="1" fill="#cbd5e1"/>`}
+          </g>`;
+        if (i % labelEvery === 0) {
+          svg += `<text x="${x + barW / 2}" y="${H - 10}" text-anchor="middle" font-size="10" fill="#64748b" font-family="Plus Jakarta Sans, sans-serif">${b.label}</text>`;
+        }
+      });
+      svg += `</svg>`;
+      wrap.innerHTML = svg;
+    }
+
+    function revenueBarRow(label, value, total, colorClass, extra) {
+      const pct = total > 0 ? (value / total * 100) : 0;
+      return `<div>
+        <div class="flex items-center justify-between text-xs mb-1.5">
+          <span class="font-bold text-slate-800 truncate pr-2">${escapeHtml(label)}</span>
+          <span class="font-extrabold text-slate-900 tnum shrink-0">${inr(value)}</span>
+        </div>
+        <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden"><div class="h-full ${colorClass}" style="width:${pct.toFixed(1)}%"></div></div>
+        <p class="mt-1 text-[11px] text-slate-500">${extra}</p>
+      </div>`;
+    }
+
+    function renderRevenueDashboard() {
+      if (!document.getElementById("viewAdminRevenue")) return;
+      const win = getRevenueWindow();
+      document.getElementById("revRangeLabel").textContent = win.label;
+
+      // Range tab styling
+      document.querySelectorAll("#revRangeTabs button").forEach(btn => {
+        btn.className = "px-3.5 py-2 rounded-lg " + (btn.dataset.range === revenueRange
+          ? "bg-white text-primary shadow-sm" : "text-slate-600 hover:text-slate-900 transition-colors");
+      });
+
+      const inRange = state.orders.filter(o => o.createdAt >= win.start && o.createdAt <= win.end);
+      const prev = win.prevStart == null ? null
+        : state.orders.filter(o => o.createdAt >= win.prevStart && o.createdAt < win.prevEnd);
+
+      const total = inRange.reduce((a, o) => a + orderAmount(o), 0);
+      const count = inRange.length;
+      const aov = count ? total / count : 0;
+      const completed = inRange.filter(o => o.status === "Completed");
+      const completedTotal = completed.reduce((a, o) => a + orderAmount(o), 0);
+      const pipelineTotal = total - completedTotal;
+
+      const delta = (cur, prv) => {
+        if (prv == null) return "";
+        if (prv === 0) return cur === 0 ? "No change vs previous period" : "New vs. an empty previous period";
+        const pct = (cur - prv) / prv * 100;
+        const up = pct >= 0;
+        return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold ${up ? "bg-teal-100 text-[#006e70]" : "bg-red-100 text-red-800"}">
+          <span class="material-symbols-outlined text-[14px]">${up ? "trending_up" : "trending_down"}</span>${up ? "+" : ""}${pct.toFixed(1)}%</span>
+          <span class="ml-1">vs previous ${win.days} days</span>`;
+      };
+      const prevTotal = prev ? prev.reduce((a, o) => a + orderAmount(o), 0) : null;
+      const prevAov = prev ? (prev.length ? prevTotal / prev.length : 0) : null;
+
+      document.getElementById("revKpiTotal").textContent = inr(total);
+      document.getElementById("revKpiTotalSub").innerHTML = delta(total, prevTotal) || "Across all recorded orders";
+      document.getElementById("revKpiOrders").textContent = count;
+      document.getElementById("revKpiOrdersSub").innerHTML = delta(count, prev ? prev.length : null) || "Across all recorded orders";
+      document.getElementById("revKpiAov").textContent = inr(aov);
+      document.getElementById("revKpiAovSub").innerHTML = delta(aov, prevAov) || "Total revenue ÷ orders";
+      document.getElementById("revKpiCompleted").textContent = inr(completedTotal);
+      document.getElementById("revKpiCompletedSub").textContent = `${inr(pipelineTotal)} still in the pipeline`;
+
+      // Chart
+      const { buckets, mode } = buildRevenueBuckets(inRange, win);
+      renderRevenueChart(buckets, mode);
+
+      // Status breakdown
+      const statuses = [
+        ["New", "bg-blue-500"], ["In Printing", "bg-amber-500"],
+        ["Ready", "bg-emerald-500"], ["Completed", "bg-slate-500"]
+      ];
+      document.getElementById("revStatusBreakdown").innerHTML = count === 0
+        ? `<p class="text-sm text-slate-400">No orders in this period.</p>`
+        : statuses.map(([st, cls]) => {
+            const list = inRange.filter(o => o.status === st);
+            return revenueBarRow(st, list.reduce((a, o) => a + orderAmount(o), 0), total, cls,
+              `${list.length} order${list.length === 1 ? "" : "s"}`);
+          }).join("");
+
+      // Top customers
+      const byCust = {};
+      inRange.forEach(o => {
+        const c = byCust[o.customer || "Unknown"] ||= { total: 0, n: 0, initials: o.initials || "?" };
+        c.total += orderAmount(o); c.n++;
+      });
+      const topCust = Object.entries(byCust).sort((a, b) => b[1].total - a[1].total).slice(0, 5);
+      document.getElementById("revTopCustomers").innerHTML = topCust.length === 0
+        ? `<p class="text-sm text-slate-400">No orders in this period.</p>`
+        : topCust.map(([name, c]) => `
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-extrabold shrink-0">${escapeHtml(c.initials)}</div>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-bold text-slate-900 truncate">${escapeHtml(name)}</p>
+              <p class="text-[11px] text-slate-500">${c.n} order${c.n === 1 ? "" : "s"}</p>
+            </div>
+            <span class="text-sm font-extrabold text-slate-900 tnum">${inr(c.total)}</span>
+          </div>`).join("");
+
+      // By press
+      const byPress = {};
+      inRange.forEach(o => {
+        const p = byPress[o.press || "Unassigned"] ||= { total: 0, n: 0 };
+        p.total += orderAmount(o); p.n++;
+      });
+      document.getElementById("revByPress").innerHTML = count === 0
+        ? `<p class="text-sm text-slate-400">No orders in this period.</p>`
+        : Object.entries(byPress).sort((a, b) => b[1].total - a[1].total)
+            .map(([name, p]) => revenueBarRow(name, p.total, total, "bg-secondary", `${p.n} order${p.n === 1 ? "" : "s"}`)).join("");
+
+      // Recent transactions
+      const recent = [...inRange].sort((a, b) => b.createdAt - a.createdAt).slice(0, 6);
+      document.getElementById("revRecent").innerHTML = recent.length === 0
+        ? `<p class="text-sm text-slate-400">No orders in this period.</p>`
+        : recent.map(o => `
+          <button onclick="viewOrderDetail('${escapeHtml(o.id)}')" class="flex items-center justify-between gap-3 py-2.5 text-left hover:bg-slate-50 rounded-lg px-1 transition-colors">
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-primary">#${escapeHtml(o.id)}</p>
+              <p class="text-[11px] text-slate-500 truncate">${escapeHtml(o.customer)} · ${new Date(o.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</p>
+            </div>
+            <div class="text-right shrink-0">
+              <p class="text-sm font-extrabold text-slate-900 tnum">${inr(orderAmount(o))}</p>
+              <span class="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold ${getStatusBadgeClass(o.status)}">${escapeHtml(o.status)}</span>
+            </div>
+          </button>`).join("");
+    }
+
+    function exportRevenueCSV() {
+      const win = getRevenueWindow();
+      const rows = state.orders
+        .filter(o => o.createdAt >= win.start && o.createdAt <= win.end)
+        .sort((a, b) => a.createdAt - b.createdAt);
+      if (rows.length === 0) { showToast("No orders in this period to export."); return; }
+      const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      let csv = "Date,Order ID,Customer,Press,Status,Amount (INR)\n";
+      rows.forEach(o => {
+        csv += [q(new Date(o.createdAt).toISOString().slice(0, 10)), q(o.id), q(o.customer), q(o.press), q(o.status), orderAmount(o).toFixed(2)].join(",") + "\n";
+      });
+      const total = rows.reduce((a, o) => a + orderAmount(o), 0);
+      csv += `"","","","","Total",${total.toFixed(2)}\n`;
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `lupte-computer-revenue-${revenueRange === "all" ? "all-time" : revenueRange + "d"}-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Exported revenue CSV!");
+    }
+
+    // -------------------------------------------------------------
+    // PAN CARD APPLICATION (customer view + admin review)
+    // -------------------------------------------------------------
+    const PAN_TYPES = {
+      new:        { label: "New PAN card",          icon: "add_card",      desc: "First-time application" },
+      correction: { label: "Correction / update",   icon: "edit_note",     desc: "Fix name, DOB, address…" },
+      reprint:    { label: "Reprint / duplicate",   icon: "print",         desc: "Lost or damaged card" }
+    };
+    const PAN_STATUSES = ["Received", "Verifying", "Docs Needed", "Submitted", "Completed"];
+    const PAN_STATUS_CLASS = {
+      "Received":    "bg-blue-100 text-blue-900 border border-blue-300",
+      "Verifying":   "bg-amber-100 text-amber-900 border border-amber-300",
+      "Docs Needed": "bg-red-100 text-red-900 border border-red-300",
+      "Submitted":   "bg-violet-100 text-violet-900 border border-violet-300",
+      "Completed":   "bg-emerald-100 text-emerald-900 border border-emerald-300"
+    };
+    const IMG_TYPES = ["image/jpeg", "image/png"];
+    const ANY_TYPES = ["image/jpeg", "image/png", "application/pdf"];
+    const PAN_SLOTS = [
+      { key: "photo",        short: "Photo",     label: "Passport-size photograph", hint: "JPG or PNG, up to 2 MB. Plain light background, face clearly visible.", types: IMG_TYPES, maxMB: 2, required: true },
+      { key: "signature",    short: "Signature", label: "Signature",                hint: "JPG or PNG, up to 2 MB. Sign on plain white paper with a dark pen.",   types: IMG_TYPES, maxMB: 2, required: true },
+      { key: "idProof",      short: "ID",        label: "Proof of identity",        hint: "Aadhaar, Voter ID, Passport or Driving Licence. JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: true },
+      { key: "addressProof", short: "Address",   label: "Proof of address",         hint: "Skip if your Aadhaar is uploaded above. JPG, PNG or PDF, up to 5 MB.",  types: ANY_TYPES, maxMB: 5, required: false },
+      { key: "dobProof",     short: "DOB",       label: "Proof of date of birth",   hint: "Skip if your Aadhaar is uploaded above. Birth certificate, 10th marksheet or passport.", types: ANY_TYPES, maxMB: 5, required: false },
+      { key: "existingPan",  short: "Old PAN",   label: "Existing PAN card copy",   hint: "JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: true, onlyExisting: true }
+    ];
+
+    let panApps = [];
+    try { panApps = JSON.parse(localStorage.getItem("pe_pan_apps_v1")) || []; } catch (e) { panApps = []; }
+    function savePanApps() {
+      try { localStorage.setItem("pe_pan_apps_v1", JSON.stringify(panApps)); return true; }
+      catch (e) { showToast("Browser storage is full - could not save the application."); return false; }
+    }
+
+    // ---------------- ADMIN ----------------
+    function updatePanTabBadge() {
+      if (typeof updateCertTabBadge === "function") updateCertTabBadge();
+      const pending = panApps.filter(a => a.status === "Received").length;
+      document.querySelectorAll(".pan-tab-badge").forEach(b => {
+        b.textContent = pending;
+        b.classList.toggle("hidden", pending === 0);
+      });
+    }
+
+    function renderAdminPan() {
+      const body = document.getElementById("adminPanBody");
+      if (!body) return;
+
+      // status filter options (built once)
+      const sel = document.getElementById("adminPanFilter");
+      if (sel.options.length === 1) PAN_STATUSES.forEach(st => sel.add(new Option(st, st)));
+
+      const q = (document.getElementById("adminPanSearch").value || "").toLowerCase();
+      const f = sel.value;
+      const rows = panApps.filter(a =>
+        (f === "all" || a.status === f) &&
+        (!q || a.ref.toLowerCase().includes(q) || a.name.toLowerCase().includes(q) || a.mobile.includes(q)));
+
+      const counts = PAN_STATUSES.map(st => [st, panApps.filter(a => a.status === st).length]).filter(([, n]) => n);
+      document.getElementById("adminPanCounts").textContent = panApps.length
+        ? panApps.length + " total" + (counts.length ? " · " + counts.map(([st, n]) => `${n} ${st.toLowerCase()}`).join(" · ") : "")
+        : "No applications yet";
+
+      if (!rows.length) {
+        body.innerHTML = `<tr><td colspan="6" class="p-10 text-center text-slate-400">${panApps.length ? "No applications match your filter." : "No PAN applications yet. They appear here when customers submit the form."}</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = rows.map(a => {
+        const docBtns = PAN_SLOTS.filter(sl => a.docs[sl.key]).map(sl => `
+          <button onclick="openPanDoc('${a.ref}', '${sl.key}')" title="${escapeHtml(a.docs[sl.key].name)}"
+            class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 hover:bg-cyan-50 hover:text-primary text-slate-700 font-semibold transition-colors">
+            <span class="material-symbols-outlined text-[14px]">${a.docs[sl.key].type === "application/pdf" ? "picture_as_pdf" : "image"}</span>${sl.short}
+          </button>`).join("");
+        return `<tr class="align-top hover:bg-slate-50/60">
+          <td class="p-4">
+            <p class="font-extrabold text-primary tnum">${escapeHtml(a.ref)}</p>
+            <p class="text-[11px] text-slate-500">${new Date(a.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
+          </td>
+          <td class="p-4 min-w-[220px]">
+            <p class="font-bold text-slate-900">${escapeHtml(a.name)}</p>
+            <p class="text-[11px] text-slate-500">${escapeHtml(a.mobile)} · ${escapeHtml(a.email)}</p>
+            <details class="mt-1.5 text-[11px] text-slate-600">
+              <summary class="cursor-pointer font-semibold text-primary">Details</summary>
+              <div class="mt-1.5 space-y-0.5">
+                <p><span class="text-slate-400">Father:</span> ${escapeHtml(a.father)}</p>
+                <p><span class="text-slate-400">DOB:</span> ${escapeHtml(a.dob)} · ${escapeHtml(a.gender)}</p>
+                <p><span class="text-slate-400">Address:</span> ${escapeHtml(a.address)} - ${escapeHtml(a.pin)}</p>
+                ${a.existingPan ? `<p><span class="text-slate-400">Existing PAN:</span> ${escapeHtml(a.existingPan)}</p>` : ""}
+              </div>
+            </details>
+          </td>
+          <td class="p-4 whitespace-nowrap">${escapeHtml(PAN_TYPES[a.type].label)}</td>
+          <td class="p-4"><div class="flex flex-wrap gap-1.5">${docBtns}</div></td>
+          <td class="p-4">
+            <select onchange="changePanStatus('${a.ref}', this.value)" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold focus:outline-none focus:ring-2 focus:ring-primary ${PAN_STATUS_CLASS[a.status]}">
+              ${PAN_STATUSES.map(st => `<option value="${st}" ${st === a.status ? "selected" : ""}>${st}</option>`).join("")}
+            </select>
+          </td>
+          <td class="p-4 text-right">
+            <button onclick="deletePanApp('${a.ref}')" class="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors" title="Delete application and documents" aria-label="Delete ${escapeHtml(a.ref)}">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </td>
+        </tr>`;
+      }).join("");
+    }
+
+    function changePanStatus(ref, status) {
+      const a = panApps.find(x => x.ref === ref);
+      if (!a) return;
+      a.status = status;
+      savePanApps();
+      renderAdminPan();
+      updatePanTabBadge();
+      showToast(`${ref} marked ${status}`);
+    }
+
+    async function openPanDoc(ref, key) {
+      const a = panApps.find(x => x.ref === ref);
+      const d = a && a.docs[key];
+      if (!d) return;
+      const w = window.open("", "_blank"); // open synchronously so popup blockers allow it
+      const blob = await getFileBlob(d.id);
+      if (!blob) {
+        if (w) w.close();
+        showToast("That file is no longer stored in this browser.");
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      if (w) w.location.href = url; else window.open(url, "_blank");
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    }
+
+    async function deletePanApp(ref) {
+      const a = panApps.find(x => x.ref === ref);
+      if (!a || !confirm(`Delete ${ref} (${a.name}) and its uploaded documents? This cannot be undone.`)) return;
+      try {
+        const db = await openFileDB();
+        const store = db.transaction("files", "readwrite").objectStore("files");
+        Object.values(a.docs).forEach(d => { store.delete(d.id); delete fileStore[d.id]; });
+      } catch (err) { /* nothing stored to remove */ }
+      panApps = panApps.filter(x => x.ref !== ref);
+      savePanApps();
+      renderAdminPan();
+      updatePanTabBadge();
+      showToast(`${ref} deleted.`);
+    }
+
+    const CERT_SVCS = {
+      income: {
+        view: "income", prefix: "INC", icon: "request_quote",
+        label: "Income Certificate", title: "Apply for Income Certificate",
+        intro: "Fill in your details and upload your documents. Our staff will check them and submit the application on the official government portal on your behalf.",
+        extraTitle: "Income details",
+        fields: [
+          { id: "income",  label: "Annual family income (₹)", type: "number", ph: "e.g. 120000" },
+          { id: "source",  label: "Main source of income", type: "select", options: ["Salaried / pension", "Agriculture", "Business / self-employed", "Daily wage / labour", "Other"] },
+          { id: "purpose", label: "Purpose of certificate", type: "select", options: ["Scholarship", "School / college admission", "Government scheme / benefit", "Job application", "Other"] }
+        ],
+        slots: [
+          { key: "photo",       short: "Photo",    label: "Passport-size photograph", hint: "JPG or PNG, up to 2 MB. Plain light background, face clearly visible.", types: IMG_TYPES, maxMB: 2, required: true },
+          { key: "idProof",     short: "ID",       label: "Proof of identity",        hint: "Aadhaar, Voter ID, Passport or Driving Licence. JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: true },
+          { key: "addrProof",   short: "Address",  label: "Proof of address",         hint: "Ration card, electricity bill or Aadhaar. Skip if your Aadhaar is uploaded above.", types: ANY_TYPES, maxMB: 5, required: false },
+          { key: "incomeProof", short: "Income",   label: "Income proof",             hint: "Salary slip, Form 16, pension slip, land record (RoR) or employer certificate. JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: true },
+          { key: "selfDecl",    short: "Decl.",    label: "Signed self-declaration",  hint: "Signed income declaration / affidavit, if you have one. JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: false }
+        ],
+        checklist: [
+          "Passport-size photograph",
+          "Proof of identity (Aadhaar, Voter ID, Passport, Driving Licence)",
+          "Address proof (ration card, electricity bill), if not covered above",
+          "Income proof (salary slip, Form 16, land record or employer certificate)",
+          "Signed self-declaration of income, if available"
+        ],
+        note: "this form sends your documents to our staff. It does not file anything with the government by itself. Government fees, if any, are confirmed by our staff before they submit."
+      },
+      caste: {
+        view: "caste", prefix: "CST", icon: "groups",
+        label: "Caste Certificate", title: "Apply for Caste Certificate",
+        intro: "Fill in your details and upload your documents. Our staff will check them and submit the application on the official government portal on your behalf.",
+        extraTitle: "Caste details",
+        fields: [
+          { id: "category", label: "Category", type: "select", options: ["SC", "ST", "SEBC / OBC", "Other"] },
+          { id: "caste",    label: "Caste / community name", type: "text", ph: "As written in your family records" },
+          { id: "purpose",  label: "Purpose of certificate", type: "select", options: ["Scholarship", "School / college admission", "Government scheme / benefit", "Job application", "Other"] }
+        ],
+        slots: [
+          { key: "photo",       short: "Photo",   label: "Passport-size photograph", hint: "JPG or PNG, up to 2 MB. Plain light background, face clearly visible.", types: IMG_TYPES, maxMB: 2, required: true },
+          { key: "idProof",     short: "ID",      label: "Proof of identity",        hint: "Aadhaar, Voter ID, Passport or Driving Licence. JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: true },
+          { key: "addrProof",   short: "Address", label: "Proof of address",         hint: "Ration card, electricity bill or Aadhaar. Skip if your Aadhaar is uploaded above.", types: ANY_TYPES, maxMB: 5, required: false },
+          { key: "casteProof",  short: "Caste",   label: "Caste proof",              hint: "Father's / family caste certificate, school leaving certificate showing caste, or land record. JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: true },
+          { key: "selfDecl",    short: "Decl.",   label: "Signed self-declaration",  hint: "Signed caste declaration / affidavit, if required. JPG, PNG or PDF, up to 5 MB.", types: ANY_TYPES, maxMB: 5, required: false }
+        ],
+        checklist: [
+          "Passport-size photograph",
+          "Proof of identity (Aadhaar, Voter ID, Passport, Driving Licence)",
+          "Address proof (ration card, electricity bill), if not covered above",
+          "Caste proof (father's or family caste certificate, school leaving certificate, land record)",
+          "Signed self-declaration / affidavit, if required"
+        ],
+        note: "this form sends your documents to our staff. It does not file anything with the government by itself. Government fees, if any, are confirmed by our staff before they submit."
+      }
+    };
+
+    let certApps = [];
+    try { certApps = JSON.parse(localStorage.getItem("pe_cert_apps_v1")) || []; } catch (e) { certApps = []; }
+    function saveCertApps() {
+      try { localStorage.setItem("pe_cert_apps_v1", JSON.stringify(certApps)); return true; }
+      catch (e) { showToast("Browser storage is full - could not save the application."); return false; }
+    }
+
+    // ---------------- ADMIN ----------------
+    function updateCertTabBadge() {
+      const pending = certApps.filter(a => a.status === "Received").length;
+      document.querySelectorAll(".cert-tab-badge").forEach(b => {
+        b.textContent = pending;
+        b.classList.toggle("hidden", pending === 0);
+      });
+    }
+
+    function renderAdminCerts() {
+      const body = document.getElementById("adminCertBody");
+      if (!body) return;
+
+      const sel = document.getElementById("adminCertFilter");
+      if (sel.options.length === 1) PAN_STATUSES.forEach(st => sel.add(new Option(st, st)));
+
+      const q = (document.getElementById("adminCertSearch").value || "").toLowerCase();
+      const f = sel.value;
+      const sv = document.getElementById("adminCertSvc").value;
+      const rows = certApps.filter(a =>
+        (sv === "all" || a.svc === sv) &&
+        (f === "all" || a.status === f) &&
+        (!q || a.ref.toLowerCase().includes(q) || a.name.toLowerCase().includes(q) || a.mobile.includes(q)));
+
+      const counts = PAN_STATUSES.map(st => [st, certApps.filter(a => a.status === st).length]).filter(([, n]) => n);
+      document.getElementById("adminCertCounts").textContent = certApps.length
+        ? certApps.length + " total" + (counts.length ? " · " + counts.map(([st, n]) => `${n} ${st.toLowerCase()}`).join(" · ") : "")
+        : "No applications yet";
+
+      if (!rows.length) {
+        body.innerHTML = `<tr><td colspan="6" class="p-10 text-center text-slate-400">${certApps.length ? "No applications match your filter." : "No certificate applications yet. They appear here when customers submit the form."}</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = rows.map(a => {
+        const c = CERT_SVCS[a.svc];
+        const docBtns = c.slots.filter(sl => a.docs[sl.key]).map(sl => `
+          <button onclick="openCertDoc('${a.ref}', '${sl.key}')" title="${escapeHtml(a.docs[sl.key].name)}"
+            class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-100 hover:bg-cyan-50 hover:text-primary text-slate-700 font-semibold transition-colors">
+            <span class="material-symbols-outlined text-[14px]">${a.docs[sl.key].type === "application/pdf" ? "picture_as_pdf" : "image"}</span>${sl.short}
+          </button>`).join("");
+        const extraRows = c.fields.map(fl => {
+          const v = a.extra[fl.id];
+          return `<p><span class="text-slate-400">${escapeHtml(fl.label)}:</span> ${escapeHtml(fl.id === "income" ? "₹" + Number(v).toLocaleString("en-IN") : v)}</p>`;
+        }).join("");
+        return `<tr class="align-top hover:bg-slate-50/60">
+          <td class="p-4">
+            <p class="font-extrabold text-primary tnum">${escapeHtml(a.ref)}</p>
+            <p class="text-[11px] text-slate-500">${new Date(a.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
+          </td>
+          <td class="p-4 min-w-[220px]">
+            <p class="font-bold text-slate-900">${escapeHtml(a.name)}</p>
+            <p class="text-[11px] text-slate-500">${escapeHtml(a.mobile)} · ${escapeHtml(a.email)}</p>
+            <details class="mt-1.5 text-[11px] text-slate-600">
+              <summary class="cursor-pointer font-semibold text-primary">Details</summary>
+              <div class="mt-1.5 space-y-0.5">
+                <p><span class="text-slate-400">Father / guardian:</span> ${escapeHtml(a.father)}</p>
+                <p><span class="text-slate-400">DOB:</span> ${escapeHtml(a.dob)} · ${escapeHtml(a.gender)}</p>
+                <p><span class="text-slate-400">Address:</span> ${escapeHtml(a.address)} - ${escapeHtml(a.pin)}</p>
+                ${extraRows}
+              </div>
+            </details>
+          </td>
+          <td class="p-4 whitespace-nowrap">
+            <span class="inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px] text-primary">${c.icon}</span>${escapeHtml(c.label)}</span>
+          </td>
+          <td class="p-4"><div class="flex flex-wrap gap-1.5">${docBtns}</div></td>
+          <td class="p-4">
+            <select onchange="changeCertStatus('${a.ref}', this.value)" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold focus:outline-none focus:ring-2 focus:ring-primary ${PAN_STATUS_CLASS[a.status]}">
+              ${PAN_STATUSES.map(st => `<option value="${st}" ${st === a.status ? "selected" : ""}>${st}</option>`).join("")}
+            </select>
+          </td>
+          <td class="p-4 text-right">
+            <button onclick="deleteCertApp('${a.ref}')" class="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors" title="Delete application and documents" aria-label="Delete ${escapeHtml(a.ref)}">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </td>
+        </tr>`;
+      }).join("");
+    }
+
+    function changeCertStatus(ref, status) {
+      const a = certApps.find(x => x.ref === ref);
+      if (!a) return;
+      a.status = status;
+      saveCertApps();
+      renderAdminCerts();
+      updateCertTabBadge();
+      showToast(`${ref} marked ${status}`);
+    }
+
+    async function openCertDoc(ref, key) {
+      const a = certApps.find(x => x.ref === ref);
+      const d = a && a.docs[key];
+      if (!d) return;
+      const w = window.open("", "_blank");
+      const blob = await getFileBlob(d.id);
+      if (!blob) {
+        if (w) w.close();
+        showToast("That file is no longer stored in this browser.");
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      if (w) w.location.href = url; else window.open(url, "_blank");
+      setTimeout(() => URL.revokeObjectURL(url), 120000);
+    }
+
+    async function deleteCertApp(ref) {
+      const a = certApps.find(x => x.ref === ref);
+      if (!a || !confirm(`Delete ${ref} (${a.name}) and its uploaded documents? This cannot be undone.`)) return;
+      try {
+        const db = await openFileDB();
+        const store = db.transaction("files", "readwrite").objectStore("files");
+        Object.values(a.docs).forEach(d => { store.delete(d.id); delete fileStore[d.id]; });
+      } catch (err) { /* nothing stored to remove */ }
+      certApps = certApps.filter(x => x.ref !== ref);
+      saveCertApps();
+      renderAdminCerts();
+      updateCertTabBadge();
+      showToast(`${ref} deleted.`);
+    }
+
+    // -------------------------------------------------------------
+    // RENDER: ADMIN ORDER DETAIL (VIEW 5)
+    // -------------------------------------------------------------
+    function viewOrderDetail(orderId) {
+      const ord = state.orders.find(o => o.id === orderId) || state.orders[0];
+      state.selectedOrderForDetail = ord;
+
+      document.getElementById("detailBreadcrumbId").textContent = "Order #" + ord.id;
+      document.getElementById("detailHeaderTitle").textContent = "Order #" + ord.id;
+      
+      const badge = document.getElementById("detailStatusBadge");
+      badge.textContent = ord.status;
+      badge.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold " + getStatusBadgeClass(ord.status);
+
+      document.getElementById("detailStatusChanger").value = ord.status;
+
+      renderOrderFiles(ord);
+      switchView("admin-detail");
+    }
+
+    // -------------------------------------------------------------
+    // ADMIN: CUSTOMER FILES + PRINT
+    // -------------------------------------------------------------
+    const IMG_EXT = ["jpg", "jpeg", "jfif", "png", "gif", "webp", "bmp", "svg", "avif"];
+
+    function isImageFile(f, blob) {
+      const ext = (f.type || "").toLowerCase();
+      if (["tif", "tiff", "psd", "ai"].includes(ext)) return false;
+      return IMG_EXT.includes(ext) || !!(blob && blob.type && blob.type.startsWith("image/"));
+    }
+
+    // data: URLs show reliably even where blob: URLs are blocked (sandboxed previews / strict CSP)
+    function blobToDataURL(blob) {
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = () => reject(fr.error);
+        fr.readAsDataURL(blob);
+      });
+    }
+
+    function renderOrderFiles(ord) {
+      const box = document.getElementById("detailUploadedFiles");
+      if (!box) return;
+      const files = ord.files || [];
+      document.getElementById("detailFilesBadge").textContent = `${files.length} file${files.length === 1 ? "" : "s"}`;
+
+      if (files.length === 0) {
+        box.innerHTML = '<p class="text-sm text-slate-500 py-4 text-center">No customer files attached to this order.</p>';
+        return;
+      }
+
+      box.innerHTML = "";
+      files.forEach(f => {
+        const ext = (f.type || "").toLowerCase();
+        const row = document.createElement("div");
+        row.className = "flex flex-wrap items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200/70";
+        row.innerHTML = `
+          <div id="fprev-${f.id}" onclick="openOrderFile('${ord.id}','${f.id}')" class="w-16 h-16 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center shrink-0 cursor-pointer">
+            <span class="material-symbols-outlined text-[28px] text-slate-500">${IMG_EXT.includes(ext) ? "image" : "description"}</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p onclick="openOrderFile('${ord.id}','${f.id}')" class="text-sm font-bold text-slate-900 truncate cursor-pointer hover:text-primary" title="${f.name}">${f.name}</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">${f.type.toUpperCase()} • ${f.size} • ${f.pages > 1 ? f.pages + " pages" : "Single page"} • ${f.paperSize} • ${f.copies} cop${f.copies === 1 ? "y" : "ies"}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openOrderFile('${ord.id}','${f.id}')" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-primary text-xs font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px]">visibility</span><span>View</span>
+            </button>
+            <button onclick="printOrderFile('${ord.id}','${f.id}')" class="px-3.5 py-1.5 rounded-lg bg-primary hover:bg-[#004655] text-white text-xs font-bold flex items-center gap-1 shadow-sm">
+              <span class="material-symbols-outlined text-[16px]">print</span><span>Print</span>
+            </button>
+          </div>
+        `;
+        box.appendChild(row);
+
+        // Fill in a real preview for images
+        if (IMG_EXT.includes(ext) || !f.thumbnail) {
+          getFileBlob(f.id).then(async blob => {
+            let src = f.thumbnail || "";
+            if (blob && isImageFile(f, blob)) { try { src = await blobToDataURL(blob); } catch (err) {} }
+            const prev = document.getElementById("fprev-" + f.id);
+            if (src && prev) prev.innerHTML = `<img src="${src}" alt="${f.name}" class="w-full h-full object-cover"/>`;
+          });
+        } else if (f.thumbnail) {
+          const prev = row.querySelector("#fprev-" + f.id);
+          if (prev) prev.innerHTML = `<img src="${f.thumbnail}" alt="${f.name}" class="w-full h-full object-cover"/>`;
+        }
+      });
+    }
+
+    async function resolveOrderFile(orderId, fileId) {
+      const ord = state.orders.find(o => o.id === orderId);
+      const f = ord && (ord.files || []).find(x => x.id === fileId);
+      if (!f) return null;
+      const blob = await getFileBlob(fileId);
+      const isImg = isImageFile(f, blob) || (!blob && !!f.thumbnail);
+      let dataUrl = "";
+      if (blob && isImg) { try { dataUrl = await blobToDataURL(blob); } catch (err) {} }
+      return { f, blob, isImg, dataUrl, url: blob ? URL.createObjectURL(blob) : (f.thumbnail || "") };
+    }
+
+    let _viewerUrl = null;
+
+    async function openOrderFile(orderId, fileId) {
+      const r = await resolveOrderFile(orderId, fileId);
+      if (!r) { showToast("File record not found."); return; }
+
+      const ext = (r.f.type || "").toLowerCase();
+      const body = document.getElementById("fileViewerBody");
+      const dl = document.getElementById("fileViewerDownload");
+      document.getElementById("fileViewerTitle").textContent = r.f.name;
+      document.getElementById("fileViewerPrintBtn").onclick = () => printOrderFile(orderId, fileId);
+
+      if (_viewerUrl) { URL.revokeObjectURL(_viewerUrl); _viewerUrl = null; }
+      if (r.blob) _viewerUrl = r.url;
+
+      if (!r.url) {
+        dl.classList.add("hidden");
+        body.innerHTML = `<div class="text-center text-slate-600 max-w-sm">
+          <span class="material-symbols-outlined text-[48px] text-slate-400">error</span>
+          <p class="text-sm font-bold mt-2">Original file isn't stored for this order</p>
+          <p class="text-xs mt-1">It was added before file storage was enabled, or the browser data was cleared. Ask the customer to upload it again.</p>
+        </div>`;
+      } else {
+        dl.classList.remove("hidden");
+        dl.href = r.dataUrl || r.url;
+        dl.download = r.f.name;
+
+        if (r.isImg) {
+          body.innerHTML = `<img id="fileViewerImg" src="${r.dataUrl || r.url}" alt="${r.f.name}" class="max-w-full max-h-[75vh] object-contain rounded shadow bg-white"/>`;
+          document.getElementById("fileViewerImg").onerror = () => {
+            body.innerHTML = `<div class="text-center text-slate-600 max-w-sm">
+              <span class="material-symbols-outlined text-[48px] text-slate-400">broken_image</span>
+              <p class="text-sm font-bold mt-2">This image couldn't be displayed</p>
+              <p class="text-xs mt-1">The browser can't render this format. Use Download to open it in another app.</p>
+            </div>`;
+          };
+        } else if (ext === "pdf") {
+          body.innerHTML = `<iframe src="${r.url}" class="w-full h-[75vh] rounded bg-white" title="${r.f.name}"></iframe>`;
+        } else {
+          body.innerHTML = `<div class="text-center text-slate-600 max-w-sm">
+            <span class="material-symbols-outlined text-[48px] text-slate-400">draft</span>
+            <p class="text-sm font-bold mt-2">${r.f.name}</p>
+            <p class="text-xs mt-1">${ext.toUpperCase()} files can't be previewed in the browser. Use Download to open it in its own app.</p>
+          </div>`;
+        }
+      }
+      openModal("fileViewerModal");
+    }
+
+    function closeFileViewer() {
+      closeModal("fileViewerModal");
+      document.getElementById("fileViewerBody").innerHTML = "";
+      if (_viewerUrl) { URL.revokeObjectURL(_viewerUrl); _viewerUrl = null; }
+    }
+
+    // Prints an image by putting it in a print-only area of THIS page (no popups / iframes needed)
+    function printImageInPage(src) {
+      const area = document.getElementById("printArea");
+      area.innerHTML = `<img src="${src}" alt="Print file"/>`;
+      const img = area.querySelector("img");
+      let dialogOpened = false;
+
+      const cleanup = () => {
+        document.body.classList.remove("printing-file");
+        area.innerHTML = "";
+        window.removeEventListener("beforeprint", onBefore);
+        window.removeEventListener("afterprint", cleanup);
+      };
+      const onBefore = () => { dialogOpened = true; };
+      window.addEventListener("beforeprint", onBefore);
+      window.addEventListener("afterprint", cleanup);
+
+      const go = () => {
+        document.body.classList.add("printing-file");
+        setTimeout(() => {
+          try { window.print(); } catch (err) { /* handled below */ }
+          // window.print() returns after the dialog closes; if it never opened, the browser blocked it
+          setTimeout(() => {
+            if (!dialogOpened) {
+              cleanup();
+              showToast("The browser blocked the print dialog. Use View > Download, then print the downloaded file.");
+            }
+          }, 800);
+        }, 150);
+      };
+      if (img.complete) go(); else { img.onload = go; img.onerror = () => { cleanup(); showToast("Couldn't load this image for printing."); }; }
+    }
+
+    async function printOrderFile(orderId, fileId) {
+      const r = await resolveOrderFile(orderId, fileId);
+      if (!r || !r.url) { showToast("Original file is not available for printing."); return; }
+      const ext = (r.f.type || "").toLowerCase();
+
+      if (r.isImg) {
+        printImageInPage(r.dataUrl || r.url);
+        return;
+      }
+
+      if (ext === "pdf") {
+        // Off-screen (but real-sized) iframe so the browser's PDF viewer can load and print it
+        const iframe = document.createElement("iframe");
+        iframe.style.cssText = "position:fixed;left:-10000px;top:0;width:800px;height:1000px;border:0;";
+        iframe.src = r.url;
+        iframe.onload = () => {
+          try { iframe.contentWindow.focus(); iframe.contentWindow.print(); }
+          catch (err) { window.open(r.url, "_blank"); }
+        };
+        document.body.appendChild(iframe);
+        showToast("Opening print dialog... if nothing appears, use View > Download and print from your PDF reader.");
+        setTimeout(() => iframe.remove(), 120000);
+        return;
+      }
+
+      // Browsers can't print DOCX / TIFF / AI / PSD directly - hand the file over instead
+      const a = document.createElement("a");
+      a.href = r.url; a.download = r.f.name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      showToast("This file type can't be printed from the browser - downloaded it so you can open it in its app.");
+    }
+
+    function changeDetailOrderStatus(e) {
+      if (state.selectedOrderForDetail) {
+        state.selectedOrderForDetail.status = e.target.value;
+        const ord = state.orders.find(o => o.id === state.selectedOrderForDetail.id);
+        if (ord) ord.status = e.target.value;
+        saveState();
+
+        const badge = document.getElementById("detailStatusBadge");
+        badge.textContent = e.target.value;
+        badge.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold " + getStatusBadgeClass(e.target.value);
+        showToast("Status updated to " + e.target.value);
+      }
+    }
+
+    function sendPickupAlert() {
+      const banner = document.getElementById("pickupAlertBanner");
+      banner.classList.remove("hidden");
+      const btn = document.getElementById("btnSendPickupAlert");
+      btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">done</span><span>Notification Sent!</span>`;
+      btn.classList.remove("bg-secondary");
+      btn.classList.add("bg-emerald-700");
+
+      showToast("Ready for Pickup SMS & email sent with Locker PIN: 8492!");
+
+      setTimeout(() => {
+        btn.innerHTML = `<span class="material-symbols-outlined text-[18px]">notifications_active</span><span>Send "Ready for Pickup" SMS & Email</span>`;
+        btn.classList.add("bg-secondary");
+        btn.classList.remove("bg-emerald-700");
+      }, 5000);
+    }
+
+    function handleFloorNotesInput(e) {
+      const badge = document.getElementById("floorNotesSavedBadge");
+      badge.textContent = "saving...";
+      badge.className = "text-amber-600 text-[10px] font-semibold";
+      clearTimeout(window._floorNoteTimer);
+      window._floorNoteTimer = setTimeout(() => {
+        badge.textContent = "auto-saved";
+        badge.className = "text-secondary text-[10px] font-semibold";
+        localStorage.setItem("pe_floor_notes", e.target.value);
+      }, 600);
+    }
+
+    function downloadJobSourceZip(orderId) {
+      showToast(`Packaging source package for Order #${orderId || 'PE-84920'}...`);
+      setTimeout(() => {
+        showToast("Source package downloaded: Prepress-Assets-2025.zip");
+      }, 1200);
+    }
+
+    // -------------------------------------------------------------
+    // MODALS & DRAWERS
+    // -------------------------------------------------------------
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.remove("hidden");
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add("hidden");
+    }
+
+    // Toast Utility
+    function showToast(message) {
+      const toast = document.getElementById("toastNotification");
+      const msg = document.getElementById("toastMessage");
+      msg.textContent = message;
+      toast.classList.remove("hidden");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3500);
+    }
+
+    // Reload data that customers write from their own browser tabs
+    function reloadSharedData() {
+      try {
+        state.orders = JSON.parse(localStorage.getItem("pe_orders_v2")) || [];
+        panApps = JSON.parse(localStorage.getItem("pe_pan_apps_v1")) || [];
+        certApps = JSON.parse(localStorage.getItem("pe_cert_apps_v1")) || [];
+      } catch (e) {}
+    }
+
+    // Admin views
+    function switchView(viewName) {
+      state.currentView = viewName;
+
+      const views = {
+        admin: document.getElementById("viewAdminQueue"),
+        "admin-revenue": document.getElementById("viewAdminRevenue"),
+        "admin-pan": document.getElementById("viewAdminPan"),
+        "admin-certs": document.getElementById("viewAdminCerts"),
+        "admin-detail": document.getElementById("viewAdminDetail")
+      };
+      Object.keys(views).forEach(k => {
+        if (views[k]) views[k].classList.toggle("hidden", k !== viewName);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (viewName !== "admin-detail") reloadSharedData();
+      if (viewName === "admin") renderAdminTable();
+      if (viewName === "admin-revenue") renderRevenueDashboard();
+      if (viewName === "admin-pan") renderAdminPan();
+      if (viewName === "admin-certs") renderAdminCerts();
+      updatePanTabBadge();
+    }
+
+    // Refresh when a customer submits something in another tab
+    window.addEventListener("storage", () => {
+      const v = state.currentView;
+      if (v === "admin-detail") return;
+      reloadSharedData();
+      if (v === "admin") renderAdminTable();
+      else if (v === "admin-revenue") renderRevenueDashboard();
+      else if (v === "admin-pan") renderAdminPan();
+      else if (v === "admin-certs") renderAdminCerts();
+      updatePanTabBadge();
+    });
+
+    // Initialize on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      switchView("admin");
+      const savedNotes = localStorage.getItem("pe_floor_notes");
+      if (savedNotes && document.getElementById("detailFloorNotes")) {
+        document.getElementById("detailFloorNotes").value = savedNotes;
+      }
+    });
+  </script>
+
+</body>
+</html>
